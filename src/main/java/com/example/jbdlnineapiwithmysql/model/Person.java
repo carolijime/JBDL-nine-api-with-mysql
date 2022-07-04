@@ -1,4 +1,4 @@
-package com.example.eightapiwithmysql.model;
+package com.example.jbdlnineapiwithmysql.model;
 
 import lombok.*;
 

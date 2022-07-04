@@ -1,5 +1,6 @@
-package com.example.eightapiwithmysql;
+package com.example.jbdlnineapiwithmysql;
 
+import com.example.jbdlnineapiwithmysql.util.BadPersonRequestException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +33,13 @@ public class HandlerConfig {
         String message = ex.getMessage();
 
         return new ResponseEntity<>(message, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(BadPersonRequestException.class)
+    public ResponseEntity handleBadPersonRequest(BadPersonRequestException ex){
+        String message = ex.getMessage();
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
 }

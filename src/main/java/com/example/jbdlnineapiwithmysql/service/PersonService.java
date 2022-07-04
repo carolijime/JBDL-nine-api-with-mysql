@@ -1,17 +1,15 @@
-package com.example.eightapiwithmysql.service;
+package com.example.jbdlnineapiwithmysql.service;
 
-import com.example.eightapiwithmysql.model.Person;
-import com.example.eightapiwithmysql.repository.PersonRepository;
-import com.example.eightapiwithmysql.request.CreatePersonRequest;
+import com.example.jbdlnineapiwithmysql.model.Person;
+import com.example.jbdlnineapiwithmysql.repository.PersonRepository;
+import com.example.jbdlnineapiwithmysql.request.CreatePersonRequest;
+import com.example.jbdlnineapiwithmysql.util.BadPersonRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.TemporalField;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 @Service
 public class PersonService {
@@ -29,6 +27,10 @@ public class PersonService {
         personRepository.createPerson(person);
     }
 
+    public Person getPerson(int id){
+        return personRepository.getPersonById(id);
+    }
+
     private Integer calculateAgeFromDOB(String dob){
         if(dob==null){
             return null;
@@ -38,5 +40,20 @@ public class PersonService {
         LocalDate currentDate = LocalDate.now();
 
         return Period.between(dobDate, currentDate).getYears();
+    }
+
+    public List<Person> getPeople() {
+       return personRepository.getPeople();
+    }
+
+    public Person deletePerson(int pId) throws Exception {
+        Person person = personRepository.getPersonById(pId);
+        boolean isDeleted = personRepository.delete(pId);
+        if(isDeleted){
+            return person;
+        }
+
+        throw new BadPersonRequestException("Person id " + pId + " is not present in db");
+
     }
 }

@@ -1,29 +1,15 @@
-package com.example.eightapiwithmysql.controller;
+package com.example.jbdlnineapiwithmysql.controller;
 
-import com.example.eightapiwithmysql.model.Person;
-import com.example.eightapiwithmysql.request.CreatePersonRequest;
-import com.example.eightapiwithmysql.service.PersonService;
+import com.example.jbdlnineapiwithmysql.model.Person;
+import com.example.jbdlnineapiwithmysql.request.CreatePersonRequest;
+import com.example.jbdlnineapiwithmysql.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 @RestController
 public class PersonController {
@@ -40,6 +26,21 @@ public class PersonController {
         //Validations and Exception handling we have outsourced
         //Invoking service class's function
         personService.createPerson(createPersonRequest);
+    }
+
+    @GetMapping("/person")
+    public Person getPersonById(@RequestParam("id") int id){
+        return personService.getPerson(id);
+    }
+
+    @GetMapping("/person/all")
+    public List<Person> getPeople(){
+        return personService.getPeople();
+    }
+
+    @DeleteMapping("/person/{id}")
+    public Person deletePerson(@PathVariable("id") int pId) throws Exception {
+        return personService.deletePerson(pId);
     }
 
     //Below API that throws error message if error occurs (ex. missing fields)
